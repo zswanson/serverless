@@ -35,43 +35,43 @@ describe('test/integration/iotFleetProvisioning.test.js', function() {
     isDeployed = true;
   });
 
-  after(async () => {
-    if (!isDeployed) return;
-    const [
-      {
-        certificateDescription: { certificateArn },
-      },
-      policyName,
-    ] = await Promise.all([
-      awsRequest('Iot', 'describeCertificate', {
-        certificateId,
-      }),
-      resolveIoTPolicyName(),
-    ]);
-    await Promise.all([
-      awsRequest('Iot', 'detachThingPrincipal', {
-        thingName,
-        principal: certificateArn,
-      }),
-      awsRequest('Iot', 'detachPolicy', {
-        policyName,
-        target: certificateArn,
-      }),
-      awsRequest('Iot', 'updateCertificate', {
-        certificateId,
-        newStatus: 'INACTIVE',
-      }),
-    ]);
-    await Promise.all([
-      awsRequest('Iot', 'deleteThing', {
-        thingName,
-      }),
-      awsRequest('Iot', 'deleteCertificate', {
-        certificateId,
-      }),
-    ]);
-    await removeService(servicePath);
-  });
+  // after(async () => {
+  //   if (!isDeployed) return;
+  //   const [
+  //     {
+  //       certificateDescription: { certificateArn },
+  //     },
+  //     policyName,
+  //   ] = await Promise.all([
+  //     awsRequest('Iot', 'describeCertificate', {
+  //       certificateId,
+  //     }),
+  //     resolveIoTPolicyName(),
+  //   ]);
+  //   await Promise.all([
+  //     awsRequest('Iot', 'detachThingPrincipal', {
+  //       thingName,
+  //       principal: certificateArn,
+  //     }),
+  //     awsRequest('Iot', 'detachPolicy', {
+  //       policyName,
+  //       target: certificateArn,
+  //     }),
+  //     awsRequest('Iot', 'updateCertificate', {
+  //       certificateId,
+  //       newStatus: 'INACTIVE',
+  //     }),
+  //   ]);
+  //   await Promise.all([
+  //     awsRequest('Iot', 'deleteThing', {
+  //       thingName,
+  //     }),
+  //     awsRequest('Iot', 'deleteCertificate', {
+  //       certificateId,
+  //     }),
+  //   ]);
+  //   await removeService(servicePath);
+  // });
 
   it('setup a new IoT Thing with the provisioning template', async () => {
     let provisionnedThingName;

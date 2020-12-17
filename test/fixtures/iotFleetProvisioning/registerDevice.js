@@ -135,8 +135,6 @@ module.exports.main = async ({ iotEndpoint, certificatePem, privateKey }) => {
   console.log(5);
   configBuilder.with_endpoint(iotEndpoint);
   console.log(6);
-  // rce node to wait 60 seconds before killing itself, promises do not keep node alive
-  const timer = setTimeout(() => {}, 60 * 1000);
 
   const config = configBuilder.build();
   console.log(7);
