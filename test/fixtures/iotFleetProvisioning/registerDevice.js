@@ -121,28 +121,42 @@ const executeRegisterThing = async (identity, token) => {
 };
 
 module.exports.main = async ({ iotEndpoint, certificatePem, privateKey }) => {
+  console.log(1);
   const clientBootstrap = new io.ClientBootstrap();
+  console.log(2);
   const configBuilder = iot.AwsIotMqttConnectionConfigBuilder.new_mtls_builder(
     certificatePem,
     privateKey
   );
+  console.log(3);
   configBuilder.with_clean_session(false);
+  console.log(4);
   configBuilder.with_client_id(`test-${Math.floor(Math.random() * 100000000)}`);
+  console.log(5);
   configBuilder.with_endpoint(iotEndpoint);
-
+  console.log(6);
   // rce node to wait 60 seconds before killing itself, promises do not keep node alive
   const timer = setTimeout(() => {}, 60 * 1000);
 
   const config = configBuilder.build();
+  console.log(7);
   const client = new mqtt.MqttClient(clientBootstrap);
+  console.log(8);
   const connection = client.new_connection(config);
-
+  console.log(9);
   const identity = new iotidentity.IotIdentityClient(connection);
-
-  await connection.connect();
+  console.log(10);
+  try {
+    await connection.connect();
+  } catch (error) {
+    console.log(11, 'Error', error);
+    throw error;
+  }
+  console.log(11);
   const { certificateOwnershipToken: token, certificateId } = await executeKeys(identity);
+  console.log(12);
   const { thingName } = await executeRegisterThing(identity, token);
+  console.log(13);
 
-  clearTimeout(timer);
   return { certificateId, thingName };
 };
