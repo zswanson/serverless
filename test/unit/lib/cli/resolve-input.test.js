@@ -31,7 +31,7 @@ describe('test/unit/lib/cli/resolve-input.test.js', () => {
     });
 
     it('should resolve commands', async () => {
-      expect(data.commands).to.deep.equal(['cmd1', 'cmd2', 'ver', 'h', 'other']);
+      expect(data.commands).to.deep.equal(['cmd1', 'cmd2', 'ver', 'h', 'elo', 'other']);
     });
 
     it('should recognize --version as boolean', async () => {
@@ -47,7 +47,7 @@ describe('test/unit/lib/cli/resolve-input.test.js', () => {
     });
 
     it('should not recognize -v with command', async () => {
-      expect(data.options.v).to.equal('elo');
+      expect(data.options.v).to.equal(true);
     });
   });
   describe('when no commands', () => {
